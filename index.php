@@ -17,8 +17,8 @@
 
         h1 {
             margin-top: 20px;
-            color: #4A90E2;
-            font-size: 2.8em;
+            color: #4278b0;
+            font-size: 2.0em;
             text-transform: uppercase;
         }
 
@@ -102,10 +102,12 @@
     <section>
         <h2 id="pay-heading" class="arrow" onclick="toggleMenu('pay-menu', 'pay-heading')">1. Luồng Thường (PAY)</h2>
         <ul id="pay-menu" style="display: none;">
+            <li><a href="pay/pay">demo thanh toán</a></li>
             <li><a href="pay/import-value">Check HashData</a></li>
             <li><a href="pay/import-data">URL Thanh Toán</a></li>
             <li><a href="pay/import-url">Check URL Thanh Toán</a></li>
             <li><a href="pay/decode-encode">Encode & Decode</a></li>
+
         </ul>
     </section>
 
@@ -126,7 +128,7 @@
     <section>
         <h2 id="recurring-heading" class="arrow" onclick="toggleMenu('recurring-menu', 'recurring-heading')">4. Luồng Định Kỳ</h2>
         <ul id="recurring-menu" style="display: none;">
-            <li><a href="recurring/recurring_flow.php">Luồng Định Kỳ</a></li>
+            <li><a href="recurring/dinhky">demo thanh toán</a></li>
         </ul>
     </section>
 

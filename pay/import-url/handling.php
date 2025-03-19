@@ -1,39 +1,37 @@
 <?php
-error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $url = $_POST['url'];
+    $secretKey = $_POST['secretKey'];
+    $version = $_POST['version'];
 
-$vnp_SecretKey = $_GET['vnp_SecretKey'] ?? '';
-$vnp_UrlRequest = $_GET['vnp_UrlRequest'] ?? '';
-$vnp_SecureHash = $_GET['vnp_SecureHash'] ?? '';
-$vnp_Version = $_GET['vnp_Version'] ?? '';
+    // Parse URL và tách query string
+    $urlParts = parse_url($url);
+    parse_str($urlParts['query'], $params);
 
-$inputData = [];
-foreach ($_GET as $key => $value) {
-    if (strpos($key, 'vnp_') === 0 && !in_array($key, ['vnp_SecretKey', 'vnp_UrlRequest', 'vnp_SecureHash', 'vnp_SecureHashType', 'vnp_secure_hash_type', 'vnp_secure_hash'])) {
-        $inputData[$key] = $value;
+    // Lấy và xóa secure hash từ params
+    $receivedHash = $params['vnp_SecureHash'];
+    unset($params['vnp_SecureHash']);
+    unset($params['vnp_SecureHashType']);
+
+    // Sắp xếp tham số theo key
+    ksort($params);
+    $queryString = urldecode(http_build_query($params));
+
+    // Tạo hash dựa trên version
+    if ($version === '2.1.0') {
+        $secureHash = hash_hmac('sha512', $queryString, $secretKey);
+    } elseif ($version === '2.0.0') {
+        $secureHash = hash('sha256', $secretKey . $queryString);
+    } else {
+        echo 'Phiên bản không hợp lệ';
+        exit;
     }
-}
 
-ksort($inputData);
-$hashData = urldecode(http_build_query($inputData));
+    // So sánh hash
+    $isValid = strtoupper($secureHash) === strtoupper($receivedHash);
 
-// Xử lý hash dựa trên version
-if ($vnp_Version === "2.1.0") {
-    $secureHash = hash_hmac('sha512', $hashData, $vnp_SecretKey);
-} elseif ($vnp_Version === "2.0.0") {
-    $secureHash = hash('sha256', $vnp_SecretKey . $hashData);
+    echo json_encode(["valid" => $isValid, "generatedHash" => $secureHash, "receivedHash" => $receivedHash]);
 } else {
-    die("Phiên bản không hợp lệ!");
+    echo 'Phương thức không hợp lệ!';
 }
-
-$vnp_UrlPay = $vnp_UrlRequest . '?' . http_build_query($inputData) . '&vnp_SecureHash=' . $secureHash;
-
-// Hiển thị thông tin
-function renderOutput($title, $content) {
-    echo "<div class='highlight'><pre><code class='language-html' data-lang='html'><strong>$title</strong>:<br>$content</code></pre></div>";
-}
-
-renderOutput('Parameters Decode', urldecode(http_build_query($inputData, '', '<br>')));
-renderOutput('Kết quả kiểm tra so sánh checksum', $vnp_SecureHash === $secureHash ? '✅ Trùng khớp' : '❌ Không khớp');
-renderOutput('Hash Data', $hashData);
-renderOutput('Full URL', $vnp_UrlPay);
 ?>

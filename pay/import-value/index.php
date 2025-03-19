@@ -25,8 +25,8 @@
 
         h1 {
             margin-top: 20px;
-            color: #4A90E2;
-            font-size: 2.8em;
+            color: #090a0a;
+            font-size: 1.8em;
             text-transform: uppercase;
         }
 

@@ -25,8 +25,8 @@
 
         h1 {
             margin-top: 20px;
-            color: #4A90E2;
-            font-size: 2.8em;
+            color: #090a0a;
+            font-size: 1.8em;
             text-transform: uppercase;
         }
 
@@ -39,12 +39,47 @@
             box-shadow: 0 6px 30px rgba(0, 0, 0, 0.2);
             border-radius: 15px;
         }
+        #result {
+            background-color: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            margin-top: 10px;
+            white-space: pre-wrap; /* Xuống dòng khi hết chiều rộng */
+            word-break: break-word; /* Bẻ dòng nếu gặp chuỗi quá dài */
+            text-align: left; /* Căn trái cho dễ nhìn */
+            font-family: 'Courier New', Courier, monospace; /* Font nhìn kiểu code cho gọn */
+            line-height: 1.4; /* Tăng khoảng cách giữa các dòng cho thoáng */
+        }
 
         .form-row {
             display: flex;
-            flex-wrap: wrap;
+            flex-direction: column;
             gap: 15px;
+            justify-content: center;
+            align-items: stretch;
+        }
+        .col-md-12.mb-3 {
+            display: flex;
+            align-items: center;
             justify-content: space-between;
+            gap: 10px;
+        }
+
+        .col-md-12.mb-3 label {
+            width: 30%;
+            font-weight: bold;
+            text-align: left;
+        }
+
+        .col-md-12.mb-3 input,
+        .col-md-12.mb-3 select {
+            width: 70%;
+            height: 40px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
         }
 
         .form-group {

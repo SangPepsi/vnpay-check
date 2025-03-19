@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán VNPAY</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            width: 400px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h3 {
+            text-align: center;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input, select, button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Ẩn form thanh toán */
+        #payment_form {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h3>Tạo mới đơn hàng</h3>
+    <form id="frmCreateOrder" action="/dinhky/process_payment.php" method="post">
+        <label for="command">Lựa chọn yêu cầu</label>
+        <select name="command" id="command">
+            <option value="recurring">Yêu cầu đăng ký thanh toán định kỳ</option>
+            <option value="pay_n_recurring">Yêu cầu thanh toán và đăng ký định kỳ</option>
+        </select>
+
+        <label for="Amount">Số tiền</label>
+        <input type="number" name="Amount" id="Amount" min="1" max="100000000" required>
+
+        <label for="recurringFrequencyNumber">Số chu kỳ thanh toán</label>
+        <input type="number" name="recurringFrequencyNumber" id="recurringFrequencyNumber" min="1" max="12" value="1" required>
+
+        <label for="recurringFrequency">Chu kỳ thanh toán</label>
+        <select name="recurringFrequency" id="recurringFrequency">
+            <option value="day">Ngày</option>
+            <option value="week">Tuần</option>
+            <option value="month">Tháng</option>
+            <option value="quarter">Quý</option>
+            <option value="year">Năm</option>
+        </select>
+
+        <label for="language">Ngôn ngữ</label>
+        <select name="language" id="language">
+            <option value="vn">Tiếng Việt</option>
+            <option value="en">English</option>
+        </select>
+
+        <button type="submit">Thanh toán</button>
+    </form>
+</div>
+
+<!-- Form ẩn để chuyển hướng VNPAY -->
+<form id="payment_form" action="https://sandbox.vnpayment.vn/isp-svc/recurring-payment/pay" method="post">
+    <input name="ispTxnId" id="ispTxnId" type="text">
+    <input name="dataKey" id="dataKey" type="text">
+    <input name="tmnCode" id="tmnCode" type="text">
+</form>
+
+<script>
+   document.getElementById("frmCreateOrder").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const formData = new FormData(this);
+    const jsonData = Object.fromEntries(formData);
+
+    console.log("Dữ liệu gửi đi:", jsonData); // Debug request
+
+    const submitUrl = this.getAttribute("action"); // Lấy URL từ form
+
+    fetch(submitUrl, {
+        method: "POST",
+        body: JSON.stringify(jsonData),
+        headers: {
+            "Content-Type": "application/json"
+        }
+    })
+    .then(response => response.text())  // Lấy response dạng text trước khi parse JSON
+    .then(text => {
+        console.log("Raw response:", text); // Debug response
+        return JSON.parse(text);            // Sau đó mới parse JSON
+    })
+    .then(data => {
+        console.log("Parsed JSON:", data); // Debug JSON sau khi parse
+
+        if (data && data.ispTxnId && data.dataKey && data.tmnCode) {
+            document.getElementById("ispTxnId").value = data.ispTxnId;
+            document.getElementById("dataKey").value = data.dataKey;
+            document.getElementById("tmnCode").value = data.tmnCode;
+            document.getElementById("payment_form").submit();
+        } else {
+            alert("Dữ liệu trả về không hợp lệ. Vui lòng thử lại.");
+        }
+    })
+    .catch(error => {
+        console.error("Lỗi parse JSON:", error);
+        alert("Lỗi khi xử lý dữ liệu. Kiểm tra lại response từ server.");
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+Array
+(
+    [command] => recurring
+    [Amount] => 10000
+    [recurringFrequencyNumber] => 1
+    [recurringFrequency] => day
+    [language] => vn
+)
