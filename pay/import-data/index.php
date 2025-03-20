@@ -92,7 +92,7 @@
         }
 
         button {
-            background-color: #4A90E2;
+            background-color: #367cd1;
             color: #fff;
             border: none;
             padding: 10px 20px;

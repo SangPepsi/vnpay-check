@@ -1,0 +1,6 @@
+Case 1: Giao dịch thất bại
+IPN URL: https://edepotapi-demo.panhaian.com/api/EDEPOTPayment/VNPAY_IPN?&vnp_ResponseCode=99&vnp_TransactionStatus=99&vnp_TxnRef=20250320103505&vnp_SecureHash=01e07e7681b3fedaff052cf7d4fb06bd84912e4e0d486d8eef794c19a48841d2abf686e0a10f34c5abfdca22829330717f333b9e2ef8145c3e466ac90d8dc985
+Giá trị mong muốn: {"RspCode":"00","Message":"Confirm Success"}
+Giá trị nhận được: 
+Đánh giá: Không Đạt
+
