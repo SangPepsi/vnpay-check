@@ -43,8 +43,8 @@ if (isset($_POST['check'])) {
     <style>
         body { font-family: Arial, sans-serif; padding: 20px; }
         input { width: 100%; padding: 10px; margin: 5px 0; }
-        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
-        button:hover { background-color: #45a049; }
+        button { padding: 10px 20px; background-color: #367cd1; color: white; border: none; cursor: pointer; }
+        button:hover { background-color: #367cd1; }
         .result-box { width: 100%; height: 150px; overflow: auto; border: 1px solid #ddd; padding: 10px; background: #f9f9f9; }
     </style>
 </head>
@@ -64,7 +64,7 @@ if (isset($_POST['check'])) {
     <input type="text" name="hash_secret" required>
 
     <button type="submit" name="check">Kiểm tra</button>
-    <button type="reset">Quay lại</button>
+    <button type="button" onclick="window.location.href='http://localhost:8888/vnpay-check'">Quay lại trang chủ</button>
 </form>
 
 <?php if (isset($result)): ?>

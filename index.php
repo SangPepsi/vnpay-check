@@ -135,7 +135,7 @@
     <section>
         <h2 id="sit-check-heading" class="arrow" onclick="toggleMenu('sit-check-menu', 'sit-check-heading')">5. SIT CHECK</h2>
         <ul id="sit-check-menu" style="display: none;">
-            <li><a href="sit_check/sit_pay.php">SIT PAY</a></li>
+            <li><a href="sit_check/pay/sit-check.php">SIT PAY</a></li>
             <li><a href="sit_check/sit_token.php">SIT Token</a></li>
             <li><a href="sit_check/sit_installment.php">SIT Trả Góp</a></li>
             <li><a href="sit_check/sit_recurring.php">SIT Định Kỳ</a></li>
